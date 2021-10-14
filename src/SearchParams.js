@@ -2,6 +2,7 @@ import { useState, useEffect, useContext } from 'react'
 import ThemeContext from './ThemeContext'
 import useBreedList from './useBreedList'
 import Results from './Results'
+import getAnimals from './services/getAnimals'
 
 const ANIMALS = ['bird', 'cat', 'dog', 'rabbit', 'reptile']
 
@@ -10,10 +11,12 @@ const SearchParams = () => {
   const [location, updateLocation] = useState('')
   const [breed, updateBreed] = useState('')
   const [pets, setPets] = useState([])
+  const [animals, setAnimals] = useState([])
   const [breeds] = useBreedList(animal)
   const [theme, setTheme] = useContext(ThemeContext)
 
   useEffect(() => {
+    getAnimals(setAnimals)
     requestPets()
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -91,7 +94,7 @@ const SearchParams = () => {
         </label>
         <button style={{ backgroundColor: theme }}>Submit</button>
       </form>
-      <Results pets={pets} />
+      <Results pets={pets} animals={animals} />
     </div>
   )
 }

@@ -1,6 +1,6 @@
 import React from 'react'
-
 import { Link } from 'react-router-dom'
+import defaul from './default.png'
 
 // const Pet = props => {
 //   return React.createElement(
@@ -15,9 +15,9 @@ import { Link } from 'react-router-dom'
 const Pet = props => {
   const { name, animal, breed, images, location, id } = props
 
-  let hero = 'https://pets-images.dev-apis.com/pets/none.jpg'
+  let hero = defaul
   if (images.length) {
-    hero = images[0]
+    hero = images[0].small
   }
 
   return (

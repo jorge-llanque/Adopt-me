@@ -1,20 +1,21 @@
 import Pet from './Pet'
 
-const Results = ({ pets }) => {
+const Results = ({ pets, animals }) => {
+  console.log(animals)
   return (
     <div className='search'>
       {!pets.length ? (
         <h2>No Pets Found</h2>
       ) : (
-        pets.map(pet => (
+        animals.map(animal => (
           <Pet
-            animal={pet.animal}
-            key={pet.id}
-            name={pet.name}
-            breed={pet.breed}
-            images={pet.images}
-            location={`${pet.city}, ${pet.state}`}
-            id={pet.id}
+            animal={animal.type}
+            key={animal.id}
+            name={animal.name}
+            breed={animal.breeds.primary}
+            images={animal.photos}
+            location={`${animal.contact.address.city}, ${animal.contact.address.state}`}
+            id={animal.id}
           />
         ))
       )}
