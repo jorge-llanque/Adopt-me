@@ -4,8 +4,13 @@
 }
 
 body {
-  background-color: #81a69b;
-  background-image: url(http://pets-images.dev-apis.com/pets/wallpaperB.jpg);
+  background: rgb(167, 247, 199);
+  background: linear-gradient(
+    90deg,
+    rgba(167, 247, 199, 1) 0%,
+    rgba(255, 159, 174, 1) 97%
+  );
+
   margin: 0;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }

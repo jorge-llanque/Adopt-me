@@ -33939,7 +33939,7 @@ function useBreedLIst(animal) {
     async function requestBreedList() {
       setBreedList([]);
       setStatus('loading');
-      const res = await fetch(`http://pets-v2.dev-apis.com/breeds?animal=${animal}`);
+      const res = await fetch(`https://pets-v2.dev-apis.com/breeds?animal=${animal}`);
       const json = await res.json();
       localCache[animal] = json.breeds || [];
       setBreedList(localCache[animal]);
@@ -35191,7 +35191,7 @@ const Pet = props => {
     location,
     id
   } = props;
-  let hero = 'http://pets-images.dev-apis.com/pets/none.jpg';
+  let hero = 'https://pets-images.dev-apis.com/pets/none.jpg';
 
   if (images.length) {
     hero = images[0];
@@ -35307,7 +35307,7 @@ const SearchParams = () => {
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   async function requestPets() {
-    const res = await fetch(`http://pets-v2.dev-apis.com/pets?animal=${animal}&location=${location}&breed=${breed}`);
+    const res = await fetch(`https://pets-v2.dev-apis.com/pets?animal=${animal}&location=${location}&breed=${breed}`);
     const json = await res.json();
     setPets(json.pets);
   }
@@ -35494,7 +35494,7 @@ class Carousel extends _react.Component {
 }
 
 _defineProperty(Carousel, "defaultProps", {
-  images: ['http://pets-images.dev-apis.com/pets/none.jpg']
+  images: ['https://pets-images.dev-apis.com/pets/none.jpg']
 });
 
 var _default = Carousel;
@@ -35892,7 +35892,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "63222" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "50066" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
