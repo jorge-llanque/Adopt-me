@@ -3,8 +3,9 @@ import ThemeContext from './ThemeContext'
 import useBreedList from './useBreedList'
 import Results from './Results'
 import getAnimals from './services/getAnimals'
+import generateToken from './services/getToken'
 
-const ANIMALS = ['bird', 'cat', 'dog', 'rabbit', 'reptile']
+const ANIMALS = ['bird', 'cat', 'dog', 'rabbit', 'horse']
 
 const SearchParams = () => {
   const [animal, updateAnimal] = useState('')
@@ -21,12 +22,21 @@ const SearchParams = () => {
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   async function requestPets() {
+    const token = await generateToken()
     const res = await fetch(
-      `https://pets-v2.dev-apis.com/pets?animal=${animal}&location=${location}&breed=${breed}`
+      `https://api.petfinder.com/v2/animals?type=${animal}&breed=${breed}`,
+      {
+        method: 'GET',
+        mode: 'cors',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+      }
     )
     const json = await res.json()
-
-    setPets(json.pets)
+    console.log(json.animals)
+    setAnimals(json.animals)
   }
 
   return (
@@ -72,9 +82,9 @@ const SearchParams = () => {
             onBlur={e => updateBreed(e.target.value)}
           >
             <option />
-            {breeds.map(breed => (
-              <option key={breed} value={breed}>
-                {breed}
+            {breeds.map((breed, idx) => (
+              <option key={idx} value={breed.name}>
+                {breed.name}
               </option>
             ))}
           </select>

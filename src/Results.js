@@ -1,10 +1,9 @@
 import Pet from './Pet'
 
 const Results = ({ pets, animals }) => {
-  
   return (
     <div className='search'>
-      {!pets.length ? (
+      {!animals.length ? (
         <h2>No Pets Found</h2>
       ) : (
         animals.map(animal => (
