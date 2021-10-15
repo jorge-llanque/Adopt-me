@@ -35254,7 +35254,6 @@ const Results = ({
   pets,
   animals
 }) => {
-  console.log(animals);
   return (
     /*#__PURE__*/
     (0, _jsxRuntime.jsx)("div", {
@@ -35279,730 +35278,17 @@ const Results = ({
 
 var _default = Results;
 exports.default = _default;
-},{"./Pet":"Pet.js","react/jsx-runtime":"../node_modules/react/jsx-runtime.js"}],"../node_modules/parcel/src/builtins/_empty.js":[function(require,module,exports) {
-
-},{}],"../node_modules/process/browser.js":[function(require,module,exports) {
-
-// shim for using process in browser
-var process = module.exports = {}; // cached from whatever global is present so that test runners that stub it
-// don't break things.  But we need to wrap it in a try catch in case it is
-// wrapped in strict mode code which doesn't define any globals.  It's inside a
-// function because try/catches deoptimize in certain engines.
-
-var cachedSetTimeout;
-var cachedClearTimeout;
-
-function defaultSetTimout() {
-  throw new Error('setTimeout has not been defined');
-}
-
-function defaultClearTimeout() {
-  throw new Error('clearTimeout has not been defined');
-}
-
-(function () {
-  try {
-    if (typeof setTimeout === 'function') {
-      cachedSetTimeout = setTimeout;
-    } else {
-      cachedSetTimeout = defaultSetTimout;
-    }
-  } catch (e) {
-    cachedSetTimeout = defaultSetTimout;
-  }
-
-  try {
-    if (typeof clearTimeout === 'function') {
-      cachedClearTimeout = clearTimeout;
-    } else {
-      cachedClearTimeout = defaultClearTimeout;
-    }
-  } catch (e) {
-    cachedClearTimeout = defaultClearTimeout;
-  }
-})();
-
-function runTimeout(fun) {
-  if (cachedSetTimeout === setTimeout) {
-    //normal enviroments in sane situations
-    return setTimeout(fun, 0);
-  } // if setTimeout wasn't available but was latter defined
-
-
-  if ((cachedSetTimeout === defaultSetTimout || !cachedSetTimeout) && setTimeout) {
-    cachedSetTimeout = setTimeout;
-    return setTimeout(fun, 0);
-  }
-
-  try {
-    // when when somebody has screwed with setTimeout but no I.E. maddness
-    return cachedSetTimeout(fun, 0);
-  } catch (e) {
-    try {
-      // When we are in I.E. but the script has been evaled so I.E. doesn't trust the global object when called normally
-      return cachedSetTimeout.call(null, fun, 0);
-    } catch (e) {
-      // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error
-      return cachedSetTimeout.call(this, fun, 0);
-    }
-  }
-}
-
-function runClearTimeout(marker) {
-  if (cachedClearTimeout === clearTimeout) {
-    //normal enviroments in sane situations
-    return clearTimeout(marker);
-  } // if clearTimeout wasn't available but was latter defined
-
-
-  if ((cachedClearTimeout === defaultClearTimeout || !cachedClearTimeout) && clearTimeout) {
-    cachedClearTimeout = clearTimeout;
-    return clearTimeout(marker);
-  }
-
-  try {
-    // when when somebody has screwed with setTimeout but no I.E. maddness
-    return cachedClearTimeout(marker);
-  } catch (e) {
-    try {
-      // When we are in I.E. but the script has been evaled so I.E. doesn't  trust the global object when called normally
-      return cachedClearTimeout.call(null, marker);
-    } catch (e) {
-      // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error.
-      // Some versions of I.E. have different rules for clearTimeout vs setTimeout
-      return cachedClearTimeout.call(this, marker);
-    }
-  }
-}
-
-var queue = [];
-var draining = false;
-var currentQueue;
-var queueIndex = -1;
-
-function cleanUpNextTick() {
-  if (!draining || !currentQueue) {
-    return;
-  }
-
-  draining = false;
-
-  if (currentQueue.length) {
-    queue = currentQueue.concat(queue);
-  } else {
-    queueIndex = -1;
-  }
-
-  if (queue.length) {
-    drainQueue();
-  }
-}
-
-function drainQueue() {
-  if (draining) {
-    return;
-  }
-
-  var timeout = runTimeout(cleanUpNextTick);
-  draining = true;
-  var len = queue.length;
-
-  while (len) {
-    currentQueue = queue;
-    queue = [];
-
-    while (++queueIndex < len) {
-      if (currentQueue) {
-        currentQueue[queueIndex].run();
-      }
-    }
-
-    queueIndex = -1;
-    len = queue.length;
-  }
-
-  currentQueue = null;
-  draining = false;
-  runClearTimeout(timeout);
-}
-
-process.nextTick = function (fun) {
-  var args = new Array(arguments.length - 1);
-
-  if (arguments.length > 1) {
-    for (var i = 1; i < arguments.length; i++) {
-      args[i - 1] = arguments[i];
-    }
-  }
-
-  queue.push(new Item(fun, args));
-
-  if (queue.length === 1 && !draining) {
-    runTimeout(drainQueue);
-  }
-}; // v8 likes predictible objects
-
-
-function Item(fun, array) {
-  this.fun = fun;
-  this.array = array;
-}
-
-Item.prototype.run = function () {
-  this.fun.apply(null, this.array);
-};
-
-process.title = 'browser';
-process.env = {};
-process.argv = [];
-process.version = ''; // empty string to avoid regexp issues
-
-process.versions = {};
-
-function noop() {}
-
-process.on = noop;
-process.addListener = noop;
-process.once = noop;
-process.off = noop;
-process.removeListener = noop;
-process.removeAllListeners = noop;
-process.emit = noop;
-process.prependListener = noop;
-process.prependOnceListener = noop;
-
-process.listeners = function (name) {
-  return [];
-};
-
-process.binding = function (name) {
-  throw new Error('process.binding is not supported');
-};
-
-process.cwd = function () {
-  return '/';
-};
-
-process.chdir = function (dir) {
-  throw new Error('process.chdir is not supported');
-};
-
-process.umask = function () {
-  return 0;
-};
-},{}],"../node_modules/path-browserify/index.js":[function(require,module,exports) {
-var process = require("process");
-// .dirname, .basename, and .extname methods are extracted from Node.js v8.11.1,
-// backported and transplited with Babel, with backwards-compat fixes
-
-// Copyright Joyent, Inc. and other Node contributors.
-//
-// Permission is hereby granted, free of charge, to any person obtaining a
-// copy of this software and associated documentation files (the
-// "Software"), to deal in the Software without restriction, including
-// without limitation the rights to use, copy, modify, merge, publish,
-// distribute, sublicense, and/or sell copies of the Software, and to permit
-// persons to whom the Software is furnished to do so, subject to the
-// following conditions:
-//
-// The above copyright notice and this permission notice shall be included
-// in all copies or substantial portions of the Software.
-//
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
-// OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
-// NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
-// DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
-// OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
-// USE OR OTHER DEALINGS IN THE SOFTWARE.
-
-// resolves . and .. elements in a path array with directory names there
-// must be no slashes, empty elements, or device names (c:\) in the array
-// (so also no leading and trailing slashes - it does not distinguish
-// relative and absolute paths)
-function normalizeArray(parts, allowAboveRoot) {
-  // if the path tries to go above the root, `up` ends up > 0
-  var up = 0;
-  for (var i = parts.length - 1; i >= 0; i--) {
-    var last = parts[i];
-    if (last === '.') {
-      parts.splice(i, 1);
-    } else if (last === '..') {
-      parts.splice(i, 1);
-      up++;
-    } else if (up) {
-      parts.splice(i, 1);
-      up--;
-    }
-  }
-
-  // if the path is allowed to go above the root, restore leading ..s
-  if (allowAboveRoot) {
-    for (; up--; up) {
-      parts.unshift('..');
-    }
-  }
-
-  return parts;
-}
-
-// path.resolve([from ...], to)
-// posix version
-exports.resolve = function() {
-  var resolvedPath = '',
-      resolvedAbsolute = false;
-
-  for (var i = arguments.length - 1; i >= -1 && !resolvedAbsolute; i--) {
-    var path = (i >= 0) ? arguments[i] : process.cwd();
-
-    // Skip empty and invalid entries
-    if (typeof path !== 'string') {
-      throw new TypeError('Arguments to path.resolve must be strings');
-    } else if (!path) {
-      continue;
-    }
-
-    resolvedPath = path + '/' + resolvedPath;
-    resolvedAbsolute = path.charAt(0) === '/';
-  }
-
-  // At this point the path should be resolved to a full absolute path, but
-  // handle relative paths to be safe (might happen when process.cwd() fails)
-
-  // Normalize the path
-  resolvedPath = normalizeArray(filter(resolvedPath.split('/'), function(p) {
-    return !!p;
-  }), !resolvedAbsolute).join('/');
-
-  return ((resolvedAbsolute ? '/' : '') + resolvedPath) || '.';
-};
-
-// path.normalize(path)
-// posix version
-exports.normalize = function(path) {
-  var isAbsolute = exports.isAbsolute(path),
-      trailingSlash = substr(path, -1) === '/';
-
-  // Normalize the path
-  path = normalizeArray(filter(path.split('/'), function(p) {
-    return !!p;
-  }), !isAbsolute).join('/');
-
-  if (!path && !isAbsolute) {
-    path = '.';
-  }
-  if (path && trailingSlash) {
-    path += '/';
-  }
-
-  return (isAbsolute ? '/' : '') + path;
-};
-
-// posix version
-exports.isAbsolute = function(path) {
-  return path.charAt(0) === '/';
-};
-
-// posix version
-exports.join = function() {
-  var paths = Array.prototype.slice.call(arguments, 0);
-  return exports.normalize(filter(paths, function(p, index) {
-    if (typeof p !== 'string') {
-      throw new TypeError('Arguments to path.join must be strings');
-    }
-    return p;
-  }).join('/'));
-};
-
-
-// path.relative(from, to)
-// posix version
-exports.relative = function(from, to) {
-  from = exports.resolve(from).substr(1);
-  to = exports.resolve(to).substr(1);
-
-  function trim(arr) {
-    var start = 0;
-    for (; start < arr.length; start++) {
-      if (arr[start] !== '') break;
-    }
-
-    var end = arr.length - 1;
-    for (; end >= 0; end--) {
-      if (arr[end] !== '') break;
-    }
-
-    if (start > end) return [];
-    return arr.slice(start, end - start + 1);
-  }
-
-  var fromParts = trim(from.split('/'));
-  var toParts = trim(to.split('/'));
-
-  var length = Math.min(fromParts.length, toParts.length);
-  var samePartsLength = length;
-  for (var i = 0; i < length; i++) {
-    if (fromParts[i] !== toParts[i]) {
-      samePartsLength = i;
-      break;
-    }
-  }
-
-  var outputParts = [];
-  for (var i = samePartsLength; i < fromParts.length; i++) {
-    outputParts.push('..');
-  }
-
-  outputParts = outputParts.concat(toParts.slice(samePartsLength));
-
-  return outputParts.join('/');
-};
-
-exports.sep = '/';
-exports.delimiter = ':';
-
-exports.dirname = function (path) {
-  if (typeof path !== 'string') path = path + '';
-  if (path.length === 0) return '.';
-  var code = path.charCodeAt(0);
-  var hasRoot = code === 47 /*/*/;
-  var end = -1;
-  var matchedSlash = true;
-  for (var i = path.length - 1; i >= 1; --i) {
-    code = path.charCodeAt(i);
-    if (code === 47 /*/*/) {
-        if (!matchedSlash) {
-          end = i;
-          break;
-        }
-      } else {
-      // We saw the first non-path separator
-      matchedSlash = false;
-    }
-  }
-
-  if (end === -1) return hasRoot ? '/' : '.';
-  if (hasRoot && end === 1) {
-    // return '//';
-    // Backwards-compat fix:
-    return '/';
-  }
-  return path.slice(0, end);
-};
-
-function basename(path) {
-  if (typeof path !== 'string') path = path + '';
-
-  var start = 0;
-  var end = -1;
-  var matchedSlash = true;
-  var i;
-
-  for (i = path.length - 1; i >= 0; --i) {
-    if (path.charCodeAt(i) === 47 /*/*/) {
-        // If we reached a path separator that was not part of a set of path
-        // separators at the end of the string, stop now
-        if (!matchedSlash) {
-          start = i + 1;
-          break;
-        }
-      } else if (end === -1) {
-      // We saw the first non-path separator, mark this as the end of our
-      // path component
-      matchedSlash = false;
-      end = i + 1;
-    }
-  }
-
-  if (end === -1) return '';
-  return path.slice(start, end);
-}
-
-// Uses a mixed approach for backwards-compatibility, as ext behavior changed
-// in new Node.js versions, so only basename() above is backported here
-exports.basename = function (path, ext) {
-  var f = basename(path);
-  if (ext && f.substr(-1 * ext.length) === ext) {
-    f = f.substr(0, f.length - ext.length);
-  }
-  return f;
-};
-
-exports.extname = function (path) {
-  if (typeof path !== 'string') path = path + '';
-  var startDot = -1;
-  var startPart = 0;
-  var end = -1;
-  var matchedSlash = true;
-  // Track the state of characters (if any) we see before our first dot and
-  // after any path separator we find
-  var preDotState = 0;
-  for (var i = path.length - 1; i >= 0; --i) {
-    var code = path.charCodeAt(i);
-    if (code === 47 /*/*/) {
-        // If we reached a path separator that was not part of a set of path
-        // separators at the end of the string, stop now
-        if (!matchedSlash) {
-          startPart = i + 1;
-          break;
-        }
-        continue;
-      }
-    if (end === -1) {
-      // We saw the first non-path separator, mark this as the end of our
-      // extension
-      matchedSlash = false;
-      end = i + 1;
-    }
-    if (code === 46 /*.*/) {
-        // If this is our first dot, mark it as the start of our extension
-        if (startDot === -1)
-          startDot = i;
-        else if (preDotState !== 1)
-          preDotState = 1;
-    } else if (startDot !== -1) {
-      // We saw a non-dot and non-path separator before our dot, so we should
-      // have a good chance at having a non-empty extension
-      preDotState = -1;
-    }
-  }
-
-  if (startDot === -1 || end === -1 ||
-      // We saw a non-dot character immediately before the dot
-      preDotState === 0 ||
-      // The (right-most) trimmed path component is exactly '..'
-      preDotState === 1 && startDot === end - 1 && startDot === startPart + 1) {
-    return '';
-  }
-  return path.slice(startDot, end);
-};
-
-function filter (xs, f) {
-    if (xs.filter) return xs.filter(f);
-    var res = [];
-    for (var i = 0; i < xs.length; i++) {
-        if (f(xs[i], i, xs)) res.push(xs[i]);
-    }
-    return res;
-}
-
-// String.prototype.substr - negative index don't work in IE8
-var substr = 'ab'.substr(-1) === 'b'
-    ? function (str, start, len) { return str.substr(start, len) }
-    : function (str, start, len) {
-        if (start < 0) start = str.length + start;
-        return str.substr(start, len);
-    }
-;
-
-},{"process":"../node_modules/process/browser.js"}],"../node_modules/os-browserify/browser.js":[function(require,module,exports) {
-exports.endianness = function () { return 'LE' };
-
-exports.hostname = function () {
-    if (typeof location !== 'undefined') {
-        return location.hostname
-    }
-    else return '';
-};
-
-exports.loadavg = function () { return [] };
-
-exports.uptime = function () { return 0 };
-
-exports.freemem = function () {
-    return Number.MAX_VALUE;
-};
-
-exports.totalmem = function () {
-    return Number.MAX_VALUE;
-};
-
-exports.cpus = function () { return [] };
-
-exports.type = function () { return 'Browser' };
-
-exports.release = function () {
-    if (typeof navigator !== 'undefined') {
-        return navigator.appVersion;
-    }
-    return '';
-};
-
-exports.networkInterfaces
-= exports.getNetworkInterfaces
-= function () { return {} };
-
-exports.arch = function () { return 'javascript' };
-
-exports.platform = function () { return 'browser' };
-
-exports.tmpdir = exports.tmpDir = function () {
-    return '/tmp';
-};
-
-exports.EOL = '\n';
-
-exports.homedir = function () {
-	return '/'
-};
-
-},{}],"../node_modules/dotenv/lib/main.js":[function(require,module,exports) {
-var process = require("process");
-/*::
-
-type DotenvParseOptions = {
-  debug?: boolean
-}
-
-// keys and values from src
-type DotenvParseOutput = { [string]: string }
-
-type DotenvConfigOptions = {
-  path?: string, // path to .env file
-  encoding?: string, // encoding of .env file
-  debug?: string // turn on logging for debugging purposes
-}
-
-type DotenvConfigOutput = {
-  parsed?: DotenvParseOutput,
-  error?: Error
-}
-
-*/
-const fs = require('fs');
-
-const path = require('path');
-
-const os = require('os');
-
-function log(message
-/*: string */
-) {
-  console.log(`[dotenv][DEBUG] ${message}`);
-}
-
-const NEWLINE = '\n';
-const RE_INI_KEY_VAL = /^\s*([\w.-]+)\s*=\s*(.*)?\s*$/;
-const RE_NEWLINES = /\\n/g;
-const NEWLINES_MATCH = /\r\n|\n|\r/; // Parses src into an Object
-
-function parse(src
-/*: string | Buffer */
-, options
-/*: ?DotenvParseOptions */
-)
-/*: DotenvParseOutput */
-{
-  const debug = Boolean(options && options.debug);
-  const obj = {}; // convert Buffers before splitting into lines and processing
-
-  src.toString().split(NEWLINES_MATCH).forEach(function (line, idx) {
-    // matching "KEY' and 'VAL' in 'KEY=VAL'
-    const keyValueArr = line.match(RE_INI_KEY_VAL); // matched?
-
-    if (keyValueArr != null) {
-      const key = keyValueArr[1]; // default undefined or missing values to empty string
-
-      let val = keyValueArr[2] || '';
-      const end = val.length - 1;
-      const isDoubleQuoted = val[0] === '"' && val[end] === '"';
-      const isSingleQuoted = val[0] === "'" && val[end] === "'"; // if single or double quoted, remove quotes
-
-      if (isSingleQuoted || isDoubleQuoted) {
-        val = val.substring(1, end); // if double quoted, expand newlines
-
-        if (isDoubleQuoted) {
-          val = val.replace(RE_NEWLINES, NEWLINE);
-        }
-      } else {
-        // remove surrounding whitespace
-        val = val.trim();
-      }
-
-      obj[key] = val;
-    } else if (debug) {
-      log(`did not match key and value when parsing line ${idx + 1}: ${line}`);
-    }
-  });
-  return obj;
-}
-
-function resolveHome(envPath) {
-  return envPath[0] === '~' ? path.join(os.homedir(), envPath.slice(1)) : envPath;
-} // Populates process.env from .env file
-
-
-function config(options
-/*: ?DotenvConfigOptions */
-)
-/*: DotenvConfigOutput */
-{
-  let dotenvPath = path.resolve(process.cwd(), '.env');
-  let encoding
-  /*: string */
-  = 'utf8';
-  let debug = false;
-
-  if (options) {
-    if (options.path != null) {
-      dotenvPath = resolveHome(options.path);
-    }
-
-    if (options.encoding != null) {
-      encoding = options.encoding;
-    }
-
-    if (options.debug != null) {
-      debug = true;
-    }
-  }
-
-  try {
-    // specifying an encoding returns a string instead of a buffer
-    const parsed = parse(fs.readFileSync(dotenvPath, {
-      encoding
-    }), {
-      debug
-    });
-    Object.keys(parsed).forEach(function (key) {
-      if (!Object.prototype.hasOwnProperty.call(process.env, key)) {
-        process.env[key] = parsed[key];
-      } else if (debug) {
-        log(`"${key}" is already defined in \`process.env\` and will not be overwritten`);
-      }
-    });
-    return {
-      parsed
-    };
-  } catch (e) {
-    return {
-      error: e
-    };
-  }
-}
-
-module.exports.config = config;
-module.exports.parse = parse;
-},{"fs":"../node_modules/parcel/src/builtins/_empty.js","path":"../node_modules/path-browserify/index.js","os":"../node_modules/os-browserify/browser.js","process":"../node_modules/process/browser.js"}],"services/getAnimals.js":[function(require,module,exports) {
+},{"./Pet":"Pet.js","react/jsx-runtime":"../node_modules/react/jsx-runtime.js"}],"services/getToken.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = getAnimals;
-
-var _dotenv = _interopRequireDefault(require("dotenv"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-_dotenv.default.config();
-
+exports.default = generateToken;
 let key = 'v6dGEYV7M34k6hkgOYNQY0fH99YC4nNnjkNhlnB1q5AXtZGxjC';
 let secret = 'cS7K5wQb2AK13u1OKeQqqE2BhB1j2XCkyJqM3uXo';
-let token;
-console.log(key, secret);
 
-function getAnimals(setAnimals) {
+function generateToken() {
   return fetch('https://api.petfinder.com/v2/oauth2/token', {
     method: 'POST',
     headers: {
@@ -36010,23 +35296,37 @@ function getAnimals(setAnimals) {
     },
     body: `grant_type=client_credentials&client_id=${key}&client_secret=${secret}`
   }).then(res => res.json()).then(data => {
-    token = data.access_token;
-  }).then(() => {
-    fetch('https://api.petfinder.com/v2/animals', {
-      method: 'GET',
-      mode: 'cors',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`
-      }
-    }).then(res => res.json()).then(data => {
-      setAnimals(data.animals);
-    });
+    return data.access_token;
+  });
+}
+},{}],"services/getAnimals.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = getAnimals;
+
+var _getToken = _interopRequireDefault(require("./getToken"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+async function getAnimals(setAnimals) {
+  const token = await (0, _getToken.default)();
+  return fetch('https://api.petfinder.com/v2/animals', {
+    method: 'GET',
+    mode: 'cors',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`
+    }
+  }).then(res => res.json()).then(data => {
+    setAnimals(data.animals);
   }).catch(e => {
     console.log(e);
   });
 }
-},{"dotenv":"../node_modules/dotenv/lib/main.js"}],"SearchParams.js":[function(require,module,exports) {
+},{"./getToken":"services/getToken.js"}],"SearchParams.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -36195,7 +35495,11 @@ exports.default = void 0;
 
 var _react = require("react");
 
+var _default2 = _interopRequireDefault(require("./default.png"));
+
 var _jsxRuntime = require("react/jsx-runtime");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
@@ -36223,28 +35527,42 @@ class Carousel extends _react.Component {
     } = this.props;
     return (
       /*#__PURE__*/
-      (0, _jsxRuntime.jsxs)("div", {
-        className: "carousel",
-        children: [
+      (0, _jsxRuntime.jsx)(_jsxRuntime.Fragment, {
+        children: images.length > 0 ?
         /*#__PURE__*/
-        (0, _jsxRuntime.jsx)("img", {
-          src: images[active],
-          alt: "animal"
-        }),
+        (0, _jsxRuntime.jsxs)("div", {
+          className: "carousel",
+          children: [
+          /*#__PURE__*/
+          (0, _jsxRuntime.jsx)("img", {
+            src: images[active].large,
+            alt: "animal"
+          }),
+          /*#__PURE__*/
+          (0, _jsxRuntime.jsx)("div", {
+            className: "carousel-smaller",
+            children: images.map((photo, index) =>
+            /*#__PURE__*/
+            // eslint-disable-next-line
+            (0, _jsxRuntime.jsx)("img", {
+              src: photo.small,
+              onClick: this.handleIndexClick,
+              "data-index": index,
+              className: index === active ? 'active' : '',
+              alt: "animal thumbnail"
+            }, index))
+          })]
+        }) :
         /*#__PURE__*/
         (0, _jsxRuntime.jsx)("div", {
-          className: "carousel-smaller",
-          children: images.map((photo, index) =>
+          className: "carousel",
+          children:
           /*#__PURE__*/
-          // eslint-disable-next-line
           (0, _jsxRuntime.jsx)("img", {
-            src: photo,
-            onClick: this.handleIndexClick,
-            "data-index": index,
-            className: index === active ? 'active' : '',
-            alt: "animal thumbnail"
-          }, photo))
-        })]
+            src: _default2.default,
+            alt: "animal"
+          })
+        })
       })
     );
   }
@@ -36252,12 +35570,15 @@ class Carousel extends _react.Component {
 }
 
 _defineProperty(Carousel, "defaultProps", {
-  images: ['https://pets-images.dev-apis.com/pets/none.jpg']
+  images: [{
+    large: 'https://pets-images.dev-apis.com/pets/none.jpg',
+    small: 'https://pets-images.dev-apis.com/pets/none.jpg'
+  }]
 });
 
 var _default = Carousel;
 exports.default = _default;
-},{"react":"../node_modules/react/index.js","react/jsx-runtime":"../node_modules/react/jsx-runtime.js"}],"ErrorBoundary.js":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","./default.png":"default.png","react/jsx-runtime":"../node_modules/react/jsx-runtime.js"}],"ErrorBoundary.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -36371,7 +35692,34 @@ const Modal = ({
 
 var _default = Modal;
 exports.default = _default;
-},{"react":"../node_modules/react/index.js","react-dom":"../node_modules/react-dom/index.js","react/jsx-runtime":"../node_modules/react/jsx-runtime.js"}],"Details.js":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","react-dom":"../node_modules/react-dom/index.js","react/jsx-runtime":"../node_modules/react/jsx-runtime.js"}],"services/getAnimalById.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = _default;
+
+var _getToken = _interopRequireDefault(require("./getToken"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+async function _default(id, setAnimal) {
+  const token = await (0, _getToken.default)();
+  return fetch(`https://api.petfinder.com/v2/animals/${id}`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`
+    }
+  }).then(res => res.json()).then(data => {
+    console.log('data', data.animal);
+    return data.animal;
+  }).catch(e => {
+    console.log(e);
+  });
+}
+},{"./getToken":"services/getToken.js"}],"Details.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -36390,6 +35738,8 @@ var _Carousel = _interopRequireDefault(require("./Carousel"));
 var _ErrorBoundary = _interopRequireDefault(require("./ErrorBoundary"));
 
 var _Modal = _interopRequireDefault(require("./Modal"));
+
+var _getAnimalById = _interopRequireDefault(require("./services/getAnimalById"));
 
 var _jsxRuntime = require("react/jsx-runtime");
 
@@ -36414,11 +35764,14 @@ class Details extends _react.Component {
   }
 
   async componentDidMount() {
+    const animalDetails = await (0, _getAnimalById.default)(this.props.match.params.id);
     const res = await fetch(`http://pets-v2.dev-apis.com/pets?id=${this.props.match.params.id}`);
-    const json = await res.json();
+    const json = await res.json(); //this.setState(Object.assign({ loading: false }, json.pets[0]))
+
     this.setState(Object.assign({
       loading: false
-    }, json.pets[0]));
+    }, animalDetails));
+    console.log('ffff', this.state);
   }
 
   render() {
@@ -36432,13 +35785,12 @@ class Details extends _react.Component {
     }
 
     const {
-      animal,
-      breed,
-      city,
-      state,
+      type: animal,
+      breeds: breed,
+      contact,
       description,
       name,
-      images,
+      photos: images,
       showModal
     } = this.state;
     return (
@@ -36459,7 +35811,7 @@ class Details extends _react.Component {
           }),
           /*#__PURE__*/
           (0, _jsxRuntime.jsx)("h2", {
-            children: `${animal} — ${breed} — ${city}, ${state}`
+            children: `${animal} — ${breed['primary']} — ${contact.address.city}, ${contact.address.state}`
           }),
           /*#__PURE__*/
           (0, _jsxRuntime.jsx)(_ThemeContext.default.Consumer, {
@@ -36524,7 +35876,7 @@ function DetailsErrorBoundary(props) {
     })
   );
 }
-},{"react":"../node_modules/react/index.js","react-router-dom":"../node_modules/react-router-dom/esm/react-router-dom.js","./ThemeContext":"ThemeContext.js","./Carousel":"Carousel.js","./ErrorBoundary":"ErrorBoundary.js","./Modal":"Modal.js","react/jsx-runtime":"../node_modules/react/jsx-runtime.js"}],"App.js":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","react-router-dom":"../node_modules/react-router-dom/esm/react-router-dom.js","./ThemeContext":"ThemeContext.js","./Carousel":"Carousel.js","./ErrorBoundary":"ErrorBoundary.js","./Modal":"Modal.js","./services/getAnimalById":"services/getAnimalById.js","react/jsx-runtime":"../node_modules/react/jsx-runtime.js"}],"App.js":[function(require,module,exports) {
 "use strict";
 
 var _react = _interopRequireWildcard(require("react"));
@@ -36650,7 +36002,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "65289" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "57264" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

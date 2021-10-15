@@ -1,11 +1,10 @@
 import getToken from './getToken'
 
-export default async function getAnimals(setAnimals) {
+export default async function (id, setAnimal) {
   const token = await getToken()
 
-  return fetch('https://api.petfinder.com/v2/animals', {
+  return fetch(`https://api.petfinder.com/v2/animals/${id}`, {
     method: 'GET',
-    mode: 'cors',
     headers: {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${token}`,
@@ -13,7 +12,8 @@ export default async function getAnimals(setAnimals) {
   })
     .then(res => res.json())
     .then(data => {
-      setAnimals(data.animals)
+      console.log('data', data.animal)
+      return data.animal
     })
     .catch(e => {
       console.log(e)

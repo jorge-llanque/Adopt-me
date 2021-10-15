@@ -1,4 +1,5 @@
 import { Component } from 'react'
+import defaultImage from './default.png'
 
 class Carousel extends Component {
   state = {
@@ -6,7 +7,12 @@ class Carousel extends Component {
   }
 
   static defaultProps = {
-    images: ['https://pets-images.dev-apis.com/pets/none.jpg'],
+    images: [
+      {
+        large: 'https://pets-images.dev-apis.com/pets/none.jpg',
+        small: 'https://pets-images.dev-apis.com/pets/none.jpg',
+      },
+    ],
   }
 
   handleIndexClick = event => {
@@ -18,23 +24,32 @@ class Carousel extends Component {
   render() {
     const { active } = this.state
     const { images } = this.props
+
     return (
-      <div className='carousel'>
-        <img src={images[active]} alt='animal' />
-        <div className='carousel-smaller'>
-          {images.map((photo, index) => (
-            // eslint-disable-next-line
-            <img
-              key={photo}
-              src={photo}
-              onClick={this.handleIndexClick}
-              data-index={index}
-              className={index === active ? 'active' : ''}
-              alt='animal thumbnail'
-            />
-          ))}
-        </div>
-      </div>
+      <>
+        {images.length > 0 ? (
+          <div className='carousel'>
+            <img src={images[active].large} alt='animal' />
+            <div className='carousel-smaller'>
+              {images.map((photo, index) => (
+                // eslint-disable-next-line
+                <img
+                  key={index}
+                  src={photo.small}
+                  onClick={this.handleIndexClick}
+                  data-index={index}
+                  className={index === active ? 'active' : ''}
+                  alt='animal thumbnail'
+                />
+              ))}
+            </div>
+          </div>
+        ) : (
+          <div className='carousel'>
+            <img src={defaultImage} alt='animal' />
+          </div>
+        )}
+      </>
     )
   }
 }

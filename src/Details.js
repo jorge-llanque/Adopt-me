@@ -4,16 +4,20 @@ import ThemeContext from './ThemeContext'
 import Carousel from './Carousel'
 import ErrorBoundary from './ErrorBoundary'
 import Modal from './Modal'
+import getAnimalById from './services/getAnimalById'
 
 class Details extends Component {
   state = { loading: true, showModal: false }
 
   async componentDidMount() {
+    const animalDetails = await getAnimalById(this.props.match.params.id)
     const res = await fetch(
       `http://pets-v2.dev-apis.com/pets?id=${this.props.match.params.id}`
     )
     const json = await res.json()
-    this.setState(Object.assign({ loading: false }, json.pets[0]))
+    //this.setState(Object.assign({ loading: false }, json.pets[0]))
+    this.setState(Object.assign({ loading: false }, animalDetails))
+    console.log('ffff', this.state)
   }
 
   toggleModal = () => this.setState({ showModal: !this.state.showModal })
@@ -25,15 +29,22 @@ class Details extends Component {
       return <h2>loading … </h2>
     }
 
-    const { animal, breed, city, state, description, name, images, showModal } =
-      this.state
+    const {
+      type: animal,
+      breeds: breed,
+      contact,
+      description,
+      name,
+      photos: images,
+      showModal,
+    } = this.state
 
     return (
       <div className='details'>
         <Carousel images={images} />
         <div>
           <h1>{name}</h1>
-          <h2>{`${animal} — ${breed} — ${city}, ${state}`}</h2>
+          <h2>{`${animal} — ${breed['primary']} — ${contact.address.city}, ${contact.address.state}`}</h2>
           <ThemeContext.Consumer>
             {([theme]) => (
               <button
